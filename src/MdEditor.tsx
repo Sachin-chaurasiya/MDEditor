@@ -35,18 +35,6 @@ const MdEditor = ({ list }: { list: Array<{ name: string; url: string }> }) => {
     return popup;
   };
 
-  // const filterSearchList = (text: string) => {
-  //   if (text.length > 0) {
-  //     setSearchList((prevList) =>
-  //       prevList.filter((l) =>
-  //         l.name.toLowerCase().includes(text.toLowerCase())
-  //       )
-  //     );
-  //   } else {
-  //     setSearchList(list);
-  //   }
-  // };
-
   useEffect(() => {
     if (searchtext.length > 0) {
       setSearchList((prevList) =>
