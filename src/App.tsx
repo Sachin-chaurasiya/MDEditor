@@ -1,5 +1,5 @@
 import "./App.css";
-import MdEditor from "./MdEditor";
+import MdEditor from "./component/MdEditor";
 
 function App() {
   const list = [
