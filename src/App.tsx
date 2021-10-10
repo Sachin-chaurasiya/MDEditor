@@ -8,7 +8,7 @@ function App() {
   ];
   return (
     <div className="App">
-      <MdEditor list={list} />
+      <MdEditor mentionTrigger="@" mentionList={list} />
     </div>
   );
 }

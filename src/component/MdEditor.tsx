@@ -1,17 +1,31 @@
 import "@toast-ui/editor/dist/toastui-editor.css";
+import "./MdEditor.css";
 import { Editor } from "@toast-ui/react-editor";
 import { useEffect, useRef, useState } from "react";
+import { ToolbarItems } from "../constants/widgetConstant";
+import { MdEditorProps } from "./MdEditor.types";
 
-const MdEditor = ({ list }: { list: Array<{ name: string; url: string }> }) => {
+const MdEditor = ({
+  mentionList,
+  mentionTrigger = "@",
+  placeHolder = "Write your description",
+  previewStyle = "vertical",
+  editorType = "markdown",
+  previewHighlight = false,
+  useCommandShortcut = false,
+  extendedAutolinks = true,
+  hideModeSwitch = true,
+}: MdEditorProps) => {
+  const reWidgetRule = new RegExp(
+    "\\[(" + mentionTrigger + "\\S+)\\]\\((\\S+)\\)"
+  );
   const editorRef = useRef<Editor>(null);
-  const reWidgetRule = /\[(@\S+)\]\((\S+)\)/;
   const [searchtext, setSearchText] = useState<string>("");
   const [searchList, setSearchList] =
-    useState<Array<{ name: string; url: string }>>(list);
+    useState<MdEditorProps["mentionList"]>(mentionList);
   const [isMentioning, setIsmentioning] = useState<boolean>(false);
-  const getSuggestionsList = (
-    suggesstion: Array<{ name: string; url: string }>
-  ) => {
+
+  const getSuggestionsList = (suggesstion: MdEditorProps["mentionList"]) => {
     const popup = document.createElement("ul");
     popup.classList.add("suggesstion");
     suggesstion.forEach((u) => {
@@ -25,7 +39,7 @@ const MdEditor = ({ list }: { list: Array<{ name: string; url: string }> }) => {
       editorRef.current
         ?.getInstance()
         .replaceSelection(
-          `[@${e.target.textContent}](${e.target.id})`,
+          `[${mentionTrigger}${e.target.textContent}](${e.target.id})`,
           [start[0], start[1] - searchtext.length - 2],
           end
         );
@@ -43,40 +57,35 @@ const MdEditor = ({ list }: { list: Array<{ name: string; url: string }> }) => {
         )
       );
     } else {
-      setSearchList(list);
+      setSearchList(mentionList);
     }
-  }, [searchtext, list]);
+  }, [searchtext, mentionList]);
 
   useEffect(() => {
-    setSearchList(list);
-  }, [list]);
+    setSearchList(mentionList);
+  }, [mentionList]);
 
   return (
     <>
       <Editor
         ref={editorRef}
-        placeholder="Write your description"
-        previewStyle="vertical"
-        initialEditType="markdown"
-        toolbarItems={[
-          ["heading", "bold", "italic"],
-          ["hr"],
-          ["ul", "ol"],
-          ["link"],
-        ]}
-        previewHighlight={false}
-        extendedAutolinks={true}
-        hideModeSwitch={true}
+        placeholder={placeHolder}
+        previewStyle={previewStyle}
+        initialEditType={editorType}
+        toolbarItems={ToolbarItems}
+        previewHighlight={previewHighlight}
+        extendedAutolinks={extendedAutolinks}
+        hideModeSwitch={hideModeSwitch}
         onKeyup={(_editorType, ev: any) => {
-          if (ev.key === "@") {
+          if (ev.key === mentionTrigger) {
             setIsmentioning(true);
             editorRef.current
               ?.getInstance()
               .addWidget(getSuggestionsList(searchList), "bottom");
           } else {
             const text: string = ev.target.textContent || "";
-            if (text.includes("@") && isMentioning) {
-              const index = text.lastIndexOf("@");
+            if (text.includes(mentionTrigger) && isMentioning) {
+              const index = text.lastIndexOf(mentionTrigger);
               setSearchText(text.slice(index + 1));
               editorRef.current
                 ?.getInstance()
@@ -98,13 +107,12 @@ const MdEditor = ({ list }: { list: Array<{ name: string; url: string }> }) => {
               const rule = reWidgetRule;
               const matched = text.match(rule);
               const span = document.createElement("span");
-
               span.innerHTML = `<a class="widget-anchor" href="${matched?.[2]}">${matched?.[1]}</a>`;
               return span;
             },
           },
         ]}
-        useCommandShortcut={true}
+        useCommandShortcut={useCommandShortcut}
       />
     </>
   );

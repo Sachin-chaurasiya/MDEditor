@@ -2,19 +2,3 @@
   padding: 20px 36px;
   margin: 20px;
 }
-.suggesstion {
-  list-style: none;
-  background: whitesmoke;
-  color: #21243d;
-  border-radius: 6px;
-  padding: 6px 10px;
-}
-.suggesstion li {
-  padding: 8px;
-  cursor: pointer;
-}
-.suggesstion li:hover {
-  background: #21243d;
-  color: whitesmoke;
-  text-align: center;
-}
