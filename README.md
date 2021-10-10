@@ -1,4 +1,4 @@
-## React Tree Structure Component
+## React Markdown Editor Component
 
 ### To get started
 
