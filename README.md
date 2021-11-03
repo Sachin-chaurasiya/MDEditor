@@ -1,6 +1,6 @@
 ## React Markdown Editor Component
 
-### To get started
+### 👉 To get started
 
 #### Clone the repo
 
