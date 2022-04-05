@@ -1,6 +1,1 @@
-export const ToolbarItems = [
-  ["heading", "bold", "italic"],
-  ["hr"],
-  ["ul", "ol"],
-  ["link"],
-];
+export const ToolbarItems = [["bold", "italic"], ["ul", "ol"], ["link"]];
