@@ -14,14 +14,9 @@ const MdEditor = ({
   extendedAutolinks = true,
   hideModeSwitch = true,
 }: MdEditorProps) => {
-  const editorRef = useRef<Editor>(null);
-
-  console.log(editorRef);
-
   return (
     <Fragment>
       <Editor
-        ref={editorRef}
         placeholder={placeHolder}
         previewStyle={previewStyle}
         initialEditType={editorType}
